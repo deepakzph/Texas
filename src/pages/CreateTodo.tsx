@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TodoFormSchema } from "../schema/schema";
 import type { z } from "zod";
 import { useTodos } from "../context/TodoContext";
+import { STATUS_META, STATUS_ORDER } from "../types";
 
 function CreateTodo() {
   const [formValues, setFormValues] = useState<z.infer<typeof TodoFormSchema>>({
@@ -96,17 +97,41 @@ function CreateTodo() {
         <div>
           <h1 className="w-full text-center text-lg font-bold text-slate-900">
             Todo list
-          </h1>{" "}
+          </h1>
           <div className="grid grid-cols-3 gap-3 ">
             {todos.map((todo) => (
               <div
                 key={todo.id}
                 className="bg-gray-50 rounded-2xl shadow-inherit p-4"
               >
+                <div className=" flex gap-2 justify-end">
+                  <button className="bg-blue-500 px-2 rounded-md hover:cursor-pointer hover:bg-blue-700">
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="bg-red-500 px-2 rounded-md hover:cursor-pointer hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+
                 <p>Todo id: {todo.id}</p>
                 <h2>Title: {todo.title}</h2>
                 <p>Description: {todo.description}</p>
-                <p>Status: {todo.status}</p>
+                <p>
+                  Status:
+                  <select
+                    value={todo.status}
+                    onChange={(e) => setStatus(todo.id, e.target.value as any)}
+                  >
+                    {STATUS_ORDER.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </p>
                 <p>Created At: {todo.createdAt.toLocaleString()}</p>
                 <p>Updated At: {todo.updatedAt.toLocaleString()}</p>
               </div>
