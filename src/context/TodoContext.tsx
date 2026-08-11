@@ -1,6 +1,7 @@
 import {
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -55,7 +56,7 @@ type TodosContextValue = {
 
 const TodosContext = createContext<TodosContextValue | undefined>(undefined);
 
-function TodosProvider({ children }: { children: React.ReactNode }) {
+export function TodosProvider({ children }: { children: React.ReactNode }) {
   const [todos, setTodos] = useState<Todo[]>(getTodosFromLocalStorage());
 
   useEffect(() => {
@@ -116,6 +117,27 @@ function TodosProvider({ children }: { children: React.ReactNode }) {
 
     return { all, pending, in_progress, completed };
   }, [todos]);
+
+  const value = useMemo<TodosContextValue>(
+    () => ({
+      todos,
+      addTodo,
+      updateTodo,
+      deleteTodo,
+      setStatus,
+      clearTodos,
+      counters,
+    }),
+    [todos, addTodo, updateTodo, deleteTodo, setStatus, clearTodos, counters],
+  );
+
+  return (
+    <TodosContext.Provider value={value}>{children}</TodosContext.Provider>
+  );
 }
 
-
+export function useTodos() {
+  const ctx = useContext(TodosContext);
+  if (!ctx) throw new Error("useTodos must be used within a TodoProvider");
+  return ctx;
+}
