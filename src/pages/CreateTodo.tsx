@@ -35,7 +35,7 @@ function CreateTodo() {
   };
 
   return (
-    <div className="flex w-full items-center justify-center py-8">
+    <div className="flex flex-col gap-2 w-full items-center justify-center py-8">
       <form
         onSubmit={handleSubmit}
         className="flex w-96 max-w-full flex-col gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4 "
@@ -79,9 +79,40 @@ function CreateTodo() {
           </button>
         </div>
       </form>
-      <div className="absolute bottom-4 right-4 text-sm text-slate-900">
-        <p> Title: {formValues.title || "No title"} </p>
-        <p> Description: {formValues.description || "No description"} </p>
+      <div className="flex w-full flex-col gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4">
+        <div>
+          <h1 className="w-full text-center text-lg font-bold text-slate-900">
+            Todo Counters
+          </h1>
+          <div className="flex justify-between">
+            <span>All: {counters.all}</span>
+            <span>Pending: {counters.pending}</span>
+            <span>In Progress: {counters.in_progress}</span>
+            <span>Completed: {counters.completed}</span>
+          </div>
+        </div>
+      </div>
+      <div className="gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4 md:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <h1 className="w-full text-center text-lg font-bold text-slate-900">
+            Todo list
+          </h1>{" "}
+          <div className="grid grid-cols-3 gap-3 ">
+            {todos.map((todo) => (
+              <div
+                key={todo.id}
+                className="bg-gray-50 rounded-2xl shadow-inherit p-4"
+              >
+                <p>Todo id: {todo.id}</p>
+                <h2>Title: {todo.title}</h2>
+                <p>Description: {todo.description}</p>
+                <p>Status: {todo.status}</p>
+                <p>Created At: {todo.createdAt.toLocaleString()}</p>
+                <p>Updated At: {todo.updatedAt.toLocaleString()}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
