@@ -1,6 +1,7 @@
 import { useState } from "react";
-import type { TodoFormSchema } from "../schema/schema";
+import { TodoFormSchema } from "../schema/schema";
 import type { z } from "zod";
+import { useTodos } from "../context/TodoContext";
 
 function CreateTodo() {
   const [formValues, setFormValues] = useState<z.infer<typeof TodoFormSchema>>({
@@ -8,18 +9,37 @@ function CreateTodo() {
     description: "",
   });
 
+  const {
+    todos,
+    addTodo,
+    deleteTodo,
+    updateTodo,
+    setStatus,
+    clearTodos,
+    counters,
+  } = useTodos();
+
   const handleClear = () => {
     setFormValues({ title: "", description: "" });
   };
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formValues);
-    // handleClear();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = TodoFormSchema.safeParse(formValues);
+    if (!result.success) {
+      console.error("Invalid form values:", result.error);
+      return;
+    }
+    addTodo({ ...result.data, status: "pending" });
+    handleClear();
   };
 
   return (
     <div className="flex w-full items-center justify-center py-8">
-      <div className="flex w-96 max-w-full flex-col gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4 ">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-96 max-w-full flex-col gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4 "
+      >
         <h1 className="w-full text-center text-lg font-bold text-slate-900">
           Add Todo
         </h1>
@@ -52,14 +72,13 @@ function CreateTodo() {
             Cancel
           </button>
           <button
-            onClick={handleSubmit}
             type="submit"
             className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 hover:cursor-pointer"
           >
             Submit
           </button>
         </div>
-      </div>
+      </form>
       <div className="absolute bottom-4 right-4 text-sm text-slate-900">
         <p> Title: {formValues.title || "No title"} </p>
         <p> Description: {formValues.description || "No description"} </p>
