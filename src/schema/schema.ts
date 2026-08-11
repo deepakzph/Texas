@@ -18,7 +18,7 @@ export const TodoSchema = z.object({
 
 const TodoArraySchema = z.array(TodoSchema);
 
-const TodoFormSchema = z.object({
+export const TodoFormSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")

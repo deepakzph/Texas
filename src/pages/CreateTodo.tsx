@@ -1,12 +1,9 @@
 import { useState } from "react";
-
-interface FormValues {
-  title: string;
-  description: string;
-}
+import type { TodoFormSchema } from "../schema/schema";
+import type { z } from "zod";
 
 function CreateTodo() {
-  const [formValues, setFormValues] = useState<FormValues>({
+  const [formValues, setFormValues] = useState<z.infer<typeof TodoFormSchema>>({
     title: "",
     description: "",
   });
