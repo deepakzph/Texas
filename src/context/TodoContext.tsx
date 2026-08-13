@@ -22,7 +22,12 @@ function getTodosFromLocalStorage(): Todo[] {
       return [];
     }
     return todos.flatMap((todo) => {
-      const result: Todo[] = TodoSchema.safeParse(todo).success ? [todo] : [];
+      const parse = {
+        ...todo,
+        createdAt: new Date(todo.createdAt),
+        updatedAt: new Date(todo.updatedAt),
+      };
+      const result: Todo[] = TodoSchema.safeParse(parse).success ? [parse] : [];
       return result;
     });
   } catch (error) {
