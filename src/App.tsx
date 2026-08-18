@@ -1,7 +1,6 @@
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
-import ShowCard from "./components/ShowCard";
-import type { Show } from "./components/types/ShowType";
+import type { SortKey, Show } from "./components/types/ShowType";
 import ShowGrid from "./components/ShowGrid";
 import axios from "axios";
 import SearchFilter from "./components/SearchFilter";
@@ -11,7 +10,41 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedShow, setSelectedShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
+  const [genre, setGenre] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("weight");
 
+  const genres = useMemo(() => {
+    const unique = new Set<string>();
+    shows.forEach((show) => {
+      show.genres.forEach((genre) => unique.add(genre));
+    });
+    return Array.from(unique).sort();
+  }, [shows]);
+
+  const visibleShows = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+
+    const filtered = shows.filter((show) => {
+      const matchesQuery =
+        normalizedQuery === "" ||
+        show.name.toLocaleLowerCase().includes(normalizedQuery);
+      const matchesGenre = genre === "" || show.genres.includes(genre);
+      return matchesQuery && matchesGenre;
+    });
+    return [...filtered].sort((a, b) => {
+      switch (sortKey) {
+        case "name":
+          return a.name.localeCompare(b.name);
+        case "rating":
+          return (b.rating?.average ?? -1) - (a.rating?.average ?? -1);
+        case "weight":
+          return b.weight - a.weight;
+        default:
+          return 0;
+      }
+    });
+  }, [shows, query, genre, sortKey]);
   // const fetchShows = async () => {
   //   let response;
   //   try {
@@ -79,7 +112,16 @@ function App() {
 
   return (
     <>
-      <SearchFilter />
+      <SearchFilter
+        query={query}
+        onQueryChange={setQuery}
+        genre={genre}
+        onGenreChange={setGenre}
+        genres={genres}
+        sortKey={sortKey}
+        onSortKeyChange={setSortKey}
+        resultCount={visibleShows.length}
+      />
       <ShowGrid
         shows={shows}
         isLoading={isLoading}
