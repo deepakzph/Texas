@@ -3,6 +3,8 @@ import "./App.css";
 import ShowCard from "./components/ShowCard";
 import type { Show } from "./components/types/ShowType";
 import ShowGrid from "./components/ShowGrid";
+import axios from "axios";
+import SearchFilter from "./components/SearchFilter";
 
 function App() {
   const [shows, setShows] = useState<Show[]>([]);
@@ -10,12 +12,30 @@ function App() {
   const [selectedShow, setSelectedShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // const fetchShows = async () => {
+  //   let response;
+  //   try {
+  //     response = await fetch("https://api.tvmaze.com/shows");
+  //   } catch {
+  //     throw new Error("Failed to fetch shows");
+  //   }
+
+  //   if (response.status === 404) {
+  //     throw new Error("Shows not found");
+  //   }
+
+  //   if (!response.ok) {
+  //     throw new Error("Failed to fetch shows");
+  //   }
+
+  //   const data = await response.json();
+  //   return data;
+  // };
+
   const fetchShows = async () => {
     let response;
     try {
-      response = await fetch("https://api.tvmaze.com/shows");
-
-      console.log("response", response);
+      response = await axios.get("https://api.tvmaze.com/shows");
     } catch {
       throw new Error("Failed to fetch shows");
     }
@@ -24,11 +44,11 @@ function App() {
       throw new Error("Shows not found");
     }
 
-    if (!response.ok) {
+    if (response.status != 200) {
       throw new Error("Failed to fetch shows");
     }
 
-    const data = await response.json();
+    const data = await response.data;
     return data;
   };
 
@@ -59,6 +79,7 @@ function App() {
 
   return (
     <>
+      <SearchFilter />
       <ShowGrid
         shows={shows}
         isLoading={isLoading}

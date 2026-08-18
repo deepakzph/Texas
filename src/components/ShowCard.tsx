@@ -9,6 +9,13 @@ interface ShowCardProps {
   onSelect: (show: Show) => void;
 }
 
+const STATUS_STYLES: Record<string, string> = {
+  Running: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  Ended: "bg-muted text-muted-foreground",
+  "To Be Determined": "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  "In Development": "bg-sky-500/15 text-sky-600 dark:text-sky-400",
+};
+
 const ShowCard = ({ show, onSelect }: ShowCardProps) => {
   const year = show.premiered?.slice(0, 4);
   const network = show.network?.name ?? show.webChannel?.name;
@@ -55,6 +62,7 @@ const ShowCard = ({ show, onSelect }: ShowCardProps) => {
         <span
           className={cn(
             "inline-flex rounded-md px-1.5 py-o.5 text[0.7rem] font-medium",
+            STATUS_STYLES[show.status] ?? "bg-muted text-muted-foreground",
           )}
         >
           {show.genres?.slice(0, 2).map((genre) => (

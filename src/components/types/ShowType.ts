@@ -1,3 +1,5 @@
+import { Weight } from "lucide-react";
+
 interface Schedule {
   time: string;
   days: string[];
@@ -70,3 +72,5 @@ export interface Show {
   _links: Links;
   previousepisode: PreviousEpisode;
 }
+
+export type SortKey = "name" | "rating" | "premiered" | "weight";
