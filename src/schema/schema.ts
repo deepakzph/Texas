@@ -16,7 +16,7 @@ export const TodoSchema = z.object({
   updatedAt: z.date(),
 });
 
-const TodoArraySchema = z.array(TodoSchema);
+export const TodoArraySchema = z.array(TodoSchema);
 
 export const TodoFormSchema = z.object({
   title: z
@@ -29,4 +29,4 @@ export const TodoFormSchema = z.object({
   dueDate: z.date(),
 });
 
-type TodoFormInput = z.infer<typeof TodoFormSchema>;
+export type TodoFormInput = z.infer<typeof TodoFormSchema>;
