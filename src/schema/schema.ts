@@ -26,6 +26,7 @@ export const TodoFormSchema = z.object({
   description: z
     .string()
     .max(200, "Description must be less than 200 characters"),
+  dueDate: z.date(),
 });
 
 type TodoFormInput = z.infer<typeof TodoFormSchema>;

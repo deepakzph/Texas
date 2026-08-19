@@ -1,17 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { useTodos } from "../context/TodoContext";
 import { STATUS_ORDER } from "../types";
 
 const TodoList = () => {
+  const navigate = useNavigate();
   const { counters, todos, clearTodos, deleteTodo, setStatus } = useTodos();
   return (
     <div className="flex flex-col gap-2.5">
       <div className="flex justify-start">
-        <a
-          href="/createTodo"
+        <button
+          onClick={() => navigate("/createTodo")}
           className="bg-blue-600 rounded-2xl ml-6 hover:cursor-pointer hover:bg-blue-700 text-white px-9"
         >
           Create New Todo
-        </a>
+        </button>
       </div>
       <div className="flex w-full flex-col gap-2 rounded-3xl border-2 border-slate-300 bg-gray-300 p-4">
         <div>
@@ -47,7 +49,7 @@ const TodoList = () => {
                   >
                     <div className=" flex gap-2 justify-end">
                       <button
-                        // onClick={() => handleEdit(todo.id)}
+                        onClick={() => navigate(`/edit/${todo.id}`)}
                         className="bg-blue-500 px-2 rounded-md hover:cursor-pointer hover:bg-blue-700"
                       >
                         Edit
