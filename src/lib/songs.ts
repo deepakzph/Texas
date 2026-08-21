@@ -12,13 +12,6 @@ export const songs: Track[] = [
     "src": "/music/audiocopper-dark-571483.mp3"
   },
   {
-    "id": "ek-din-title-track-female-full-video-sai-pallavi-junaid-khan-meghna-mishra-ram-sampath",
-    "title": "Title Track (Female)  Full Video  Sai Pallavi, Junaid Khan  Meghna Mishra  Ram Sampath",
-    "artist": "Ek Din",
-    "cover": "/covers/Ek Din - Title Track (Female)  Full Video  Sai Pallavi, Junaid Khan  Meghna Mishra  Ram Sampath.png",
-    "src": "/music/Ek Din - Title Track (Female)  Full Video  Sai Pallavi, Junaid Khan  Meghna Mishra  Ram Sampath.mp3"
-  },
-  {
     "id": "grand-project-wonders-of-the-earth-550792",
     "title": "grand_project-wonders-of-the-earth-550792",
     "artist": "Unknown Artist",
